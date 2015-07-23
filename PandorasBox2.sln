@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PandorasBox", "PandorasBox2\PandorasBox.csproj", "{0A9DEB8A-DD76-4D94-9621-AF8E93624EF4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PandorasBox.OS.Win32.Shared", "PandorasBox2.OS.Win32.Shared\PandorasBox.OS.Win32.Shared.csproj", "{C3EC34B7-0874-4B70-BCB3-C81EA003F004}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0A9DEB8A-DD76-4D94-9621-AF8E93624EF4} = {0A9DEB8A-DD76-4D94-9621-AF8E93624EF4}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PandorasBox.OS.Win32.OpenGL", "PandorasBox.OS.Win32.OpenGL\PandorasBox.OS.Win32.OpenGL.csproj", "{2A64B187-7630-4827-953D-A4454B1F2995}"
+	ProjectSection(ProjectDependencies) = postProject
+		{44226D32-A67F-4FC8-A373-0B01D1FE6FFA} = {44226D32-A67F-4FC8-A373-0B01D1FE6FFA}
+		{0A9DEB8A-DD76-4D94-9621-AF8E93624EF4} = {0A9DEB8A-DD76-4D94-9621-AF8E93624EF4}
+		{C3EC34B7-0874-4B70-BCB3-C81EA003F004} = {C3EC34B7-0874-4B70-BCB3-C81EA003F004}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PandorasBox.OpenGL", "PandorasBox.OpenGL\PandorasBox.OpenGL.csproj", "{44226D32-A67F-4FC8-A373-0B01D1FE6FFA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0A9DEB8A-DD76-4D94-9621-AF8E93624EF4} = {0A9DEB8A-DD76-4D94-9621-AF8E93624EF4}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp", "TestApp\TestApp.csproj", "{FAC3E1C9-F594-4D25-A8EC-E4AD69B58734}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0A9DEB8A-DD76-4D94-9621-AF8E93624EF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A9DEB8A-DD76-4D94-9621-AF8E93624EF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A9DEB8A-DD76-4D94-9621-AF8E93624EF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A9DEB8A-DD76-4D94-9621-AF8E93624EF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3EC34B7-0874-4B70-BCB3-C81EA003F004}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3EC34B7-0874-4B70-BCB3-C81EA003F004}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3EC34B7-0874-4B70-BCB3-C81EA003F004}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3EC34B7-0874-4B70-BCB3-C81EA003F004}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A64B187-7630-4827-953D-A4454B1F2995}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A64B187-7630-4827-953D-A4454B1F2995}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A64B187-7630-4827-953D-A4454B1F2995}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A64B187-7630-4827-953D-A4454B1F2995}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44226D32-A67F-4FC8-A373-0B01D1FE6FFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44226D32-A67F-4FC8-A373-0B01D1FE6FFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44226D32-A67F-4FC8-A373-0B01D1FE6FFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44226D32-A67F-4FC8-A373-0B01D1FE6FFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FAC3E1C9-F594-4D25-A8EC-E4AD69B58734}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAC3E1C9-F594-4D25-A8EC-E4AD69B58734}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAC3E1C9-F594-4D25-A8EC-E4AD69B58734}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAC3E1C9-F594-4D25-A8EC-E4AD69B58734}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
