@@ -8,11 +8,12 @@ namespace PandorasBox.Gfx.SpirV
 	public class SpirVModule
 	{
 		private SpirVModuleHeader header;
+		private List<Instruction> instructions;
 
-		internal SpirVModule(SpirVModuleHeader header)
+		internal SpirVModule(SpirVModuleHeader header, List<Instruction> instructions)
 		{
-			// TODO: Complete member initialization
 			this.header = header;
+			this.instructions = instructions;
 		}
 	}
 }

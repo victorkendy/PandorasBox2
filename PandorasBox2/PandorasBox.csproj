@@ -50,6 +50,9 @@
     <Compile Include="Gfx\IGPUTaskFactory.cs" />
     <Compile Include="Gfx\IGraphicDriver.cs" />
     <Compile Include="Gfx\IWindow.cs" />
+    <Compile Include="Gfx\SpirV\Instruction.cs" />
+    <Compile Include="Gfx\SpirV\InstructionIterator.cs" />
+    <Compile Include="Gfx\SpirV\SpirVOpcodes.cs" />
     <Compile Include="Gfx\SpirV\ShaderLoader.cs" />
     <Compile Include="Gfx\SpirV\SpirVModule.cs" />
     <Compile Include="Gfx\SpirV\SpirVModuleHeader.cs" />

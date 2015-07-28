@@ -20,7 +20,16 @@ namespace PandorasBox.Gfx.SpirV
 			using(BinaryReader reader = new BinaryReader(fileStream))
 			{
 				SpirVModuleHeader header = ReadModuleHeader(reader.ReadBytes(20));
-				return new SpirVModule(header);
+				var instructionIterator = new InstructionIterator(reader);
+				List<Instruction> instructions = new List<Instruction>();
+				Instruction instruction = instructionIterator.Next();
+				while (instruction != null)
+				{
+					logger.Debug("{0}", instruction);
+					instructions.Add(instruction);
+					instruction = instructionIterator.Next();
+				}
+				return new SpirVModule(header, instructions);
 			}
 		}
 
