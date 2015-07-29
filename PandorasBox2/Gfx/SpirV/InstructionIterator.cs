@@ -8,16 +8,16 @@ namespace PandorasBox.Gfx.SpirV
 {
 	internal class InstructionIterator
 	{
-		private System.IO.BinaryReader reader;
+		private WordReader reader;
 
-		internal InstructionIterator(System.IO.BinaryReader reader)
+		internal InstructionIterator(WordReader reader)
 		{
 			this.reader = reader;
 		}
 
 		internal Instruction Next()
 		{
-			int? word = nextWord();
+			int? word = reader.ReadWord();
 			if (word.HasValue)
 			{
 				int numberOfWords = word.Value >> 16;
@@ -27,17 +27,10 @@ namespace PandorasBox.Gfx.SpirV
 				{
 					spirvOpcode = SpirVOpcodes.OpUnknown;
 				}
-				Console.WriteLine(numberOfWords);
-				return new Instruction(spirvOpcode, opcode, reader.ReadBytes((numberOfWords - 1) * 4));
+				Object[] operands = OperandInterpreter.GetOperands(spirvOpcode, reader.ReadWords(numberOfWords - 1));
+				return new Instruction(spirvOpcode, opcode, operands);
 			}
 			return null;
-		}
-
-		private int? nextWord()
-		{
-			byte[] bytes = reader.ReadBytes(4);
-			if (bytes.Length == 0) return null;
-			return BitConverter.ToInt32(bytes, 0);
 		}
 	}
 }

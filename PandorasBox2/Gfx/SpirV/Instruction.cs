@@ -9,9 +9,9 @@ namespace PandorasBox.Gfx.SpirV
 	{
 		private int opcode;
 		private SpirVOpcodes spirvOpcode;
-		private byte[] operands;
+		private Object[] operands;
 
-		internal Instruction(SpirVOpcodes spirvOpcode, int opcode, byte[] operands)
+		internal Instruction(SpirVOpcodes spirvOpcode, int opcode, Object[] operands)
 		{
 			this.spirvOpcode = spirvOpcode;
 			this.opcode = opcode;
@@ -23,7 +23,14 @@ namespace PandorasBox.Gfx.SpirV
 
 		public override string ToString()
 		{
-			return String.Format("{0}: {1}", opcode, spirvOpcode);
+			StringBuilder builder = new StringBuilder().AppendFormat("{0}: {1} [", opcode, spirvOpcode);
+			foreach(Object operand in operands) 
+			{
+				builder.AppendFormat("{0},", operand);
+			}
+			builder.Append("]");
+
+			return builder.ToString();
 		}
 	}
 }

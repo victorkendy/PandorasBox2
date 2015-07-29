@@ -17,9 +17,9 @@ namespace PandorasBox.Gfx.SpirV
 		public SpirVModule Load(String fileName)
 		{
 			using(Stream fileStream = File.Open(fileName, FileMode.Open))
-			using(BinaryReader reader = new BinaryReader(fileStream))
+			using(WordReader reader = new WordReader(fileStream))
 			{
-				SpirVModuleHeader header = ReadModuleHeader(reader.ReadBytes(20));
+				SpirVModuleHeader header = ReadModuleHeader(reader);
 				var instructionIterator = new InstructionIterator(reader);
 				List<Instruction> instructions = new List<Instruction>();
 				Instruction instruction = instructionIterator.Next();
@@ -33,18 +33,17 @@ namespace PandorasBox.Gfx.SpirV
 			}
 		}
 
-		private SpirVModuleHeader ReadModuleHeader(byte[] bytes)
+		private SpirVModuleHeader ReadModuleHeader(WordReader reader)
 		{
-			// TODO: handle endianess
-			int magicNumber = BitConverter.ToInt32(bytes, 0);
+			int magicNumber = reader.ReadWord().Value;
 			if (magicNumber != MagicNumber)
 			{
 				throw new ArgumentException("invalid shader program");
 			}
-			int version = BitConverter.ToInt32(bytes, 4);
-			int generatorIdentifier = BitConverter.ToInt32(bytes, 8);
-			int boundIds = BitConverter.ToInt32(bytes, 12);
-			int schema = BitConverter.ToInt32(bytes, 16);
+			int version = reader.ReadWord().Value;
+			int generatorIdentifier = reader.ReadWord().Value;
+			int boundIds = reader.ReadWord().Value;
+			int schema = reader.ReadWord().Value;
 
 			logger.Debug("Magic Number = {0:X}\nVersion = {1}\nGenerator Identifier={2}\nids = {3}\nschema= {4}\n", 
 				magicNumber, version, generatorIdentifier, boundIds, schema);
