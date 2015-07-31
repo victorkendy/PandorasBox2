@@ -1,47 +1,334 @@
-﻿using System;
+﻿using PandorasBox.Gfx.SpirV.Operands;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace PandorasBox.Gfx.SpirV
 {
 	static class OperandInterpreter
 	{
+		static IDictionary<SpirVOpcodes, AbstractOperandInterpreter> operandsInterpreter = new Dictionary<SpirVOpcodes, AbstractOperandInterpreter>()
+		{
+			// Miscellaneous
+			//{ SpirVOpcodes.OpNop, new OpNopOperands() },
+			//{ SpirVOpcodes.OpUndef, new OpUndefOperands() },
+
+			// Debug
+			{ SpirVOpcodes.OpSource, new OpSourceOperands() },
+			//{ SpirVOpcodes.OpSourceExtension, new OpSourceExtensionOperands() },
+			{ SpirVOpcodes.OpName, new OpNameOperands() },
+			//{ SpirVOpcodes.OpMemberName, new OpMemberNameOperands() },
+			//{ SpirVOpcodes.OpString, new OpStringOperands() },
+			//{ SpirVOpcodes.OpLine, new OpLineOperands() },
+
+			// Annotation
+			//{ SpirVOpcodes.OpDecorationGroup, new OpDecorationGroupOperands() },
+			{ SpirVOpcodes.OpDecorate, new OpDecorateOperands() },
+			//{ SpirVOpcodes.OpMemberDecorate, new OpMemberDecorateOperands() },
+			//{ SpirVOpcodes.OpGroupDecorate, new OpGroupDecorateOperands() },
+			//{ SpirVOpcodes.OpGroupMemberDecorate, new OpGroupMemberDecorateOperands() },
+
+			// Extension
+			//{ SpirVOpcodes.OpExtension, new OpExtensionOperands() },
+			{ SpirVOpcodes.OpExtInstImport, new OpExtInstImportOperands() },
+			//{ SpirVOpcodes.OpExtInst, new OpExtInstOperands() },
+
+			// Mode-Setting
+			{ SpirVOpcodes.OpMemoryModel, new OpMemoryModelOperands() },
+			{ SpirVOpcodes.OpEntryPoint, new OpEntryPointOperands() },
+			//{ SpirVOpcodes.OpExecutionMode, new OpExecutionModeOperands() },
+			//{ SpirVOpcodes.OpCompileFlag, new OpCompileFlagOperands() },
+
+			// Type-Declaration
+			//{ SpirVOpcodes.OpTypeVoid, new OpTypeVoidOperands() },
+			//{ SpirVOpcodes.OpTypeBool, new OpTypeBoolOperands() },
+			//{ SpirVOpcodes.opTypeInt, new opTypeIntOperands() },
+			//{ SpirVOpcodes.OpTypeFloat, new OpTypeFloatOperands() },
+			//{ SpirVOpcodes.OpTypeVector, new OpTypeVectorOperands() },
+			//{ SpirVOpcodes.OpTypeMatrix, new OpTypeMatrixOperands() },
+			//{ SpirVOpcodes.OpTypeSampler, new OpTypeSamplerOperands() },
+			//{ SpirVOpcodes.OpTypeFilter, new OpTypeFilterOperands() },
+			//{ SpirVOpcodes.OpTypeArray, new OpTypeArrayOperands() },
+			//{ SpirVOpcodes.OpTypeRuntimeArray, new OpTypeRuntimeArrayOperands() },
+			//{ SpirVOpcodes.OpTypeStruct, new OpTypeStructOperands() },
+			//{ SpirVOpcodes.OpTypeOpaque, new OpTypeOpaqueOperands() },
+			//{ SpirVOpcodes.OpTypePointer, new OpTypePointerOperands() },
+			//{ SpirVOpcodes.OpTypeFunction, new OpTypeFunctionOperands() },
+			//{ SpirVOpcodes.OpTypeEvent, new OpTypeEventOperands() },
+			//{ SpirVOpcodes.OpTypeDeviceEvent, new OpTypeDeviceEventOperands() },
+			//{ SpirVOpcodes.OpTypeReserveId, new OpTypeReserveIdOperands() },
+			//{ SpirVOpcodes.OpTypeQueue, new OpTypeQueueOperands() },
+			//{ SpirVOpcodes.OpTypePipe, new OpTypePipeOperands() },
+
+			// Constant Creation
+			//{ SpirVOpcodes.OpConstantTrue, new OpConstantTrueOperands() },
+			//{ SpirVOpcodes.OpConstantFalse, new OpConstantFalseOperands() },
+			//{ SpirVOpcodes.OpConstant, new OpConstantOperands() },
+			//{ SpirVOpcodes.OpConstantComposite, new OpConstantCompositeOperands() },
+			//{ SpirVOpcodes.OpConstantSampler, new OpConstantSamplerOperands() },
+			//{ SpirVOpcodes.OpConstantNullPointer, new OpConstantNullPointerOperands() },
+			//{ SpirVOpcodes.OpConstantNullObject, new OpConstantNullObjectOperands() },
+			//{ SpirVOpcodes.OpSpecConstantTrue, new OpSpecConstantTrueOperands() },
+			//{ SpirVOpcodes.OpSpecConstantFalse, new OpSpecConstantFalseOperands() },
+			//{ SpirVOpcodes.OpSpecConstant, new OpSpecConstantOperands() },
+			//{ SpirVOpcodes.OpSpecConstantComposite, new OpSpecConstantCompositeOperands() },
+
+			// Memory
+			//{ SpirVOpcodes.OpVariable, new OpVariableOperands() },
+			//{ SpirVOpcodes.OpVariableArray, new OpVariableArrayOperands() },
+			//{ SpirVOpcodes.OpLoad, new OpLoadOperands() },
+			//{ SpirVOpcodes.OpStore, new OpStoreOperands() },
+			//{ SpirVOpcodes.OpCopyMemory, new OpCopyMemoryOperands() },
+			//{ SpirVOpcodes.OpCopyMemorySized, new OpCopyMemorySizedOperands() },
+			//{ SpirVOpcodes.OpAccessChain, new OpAccessChainOperands() },
+			//{ SpirVOpcodes.OpInBoundsAccessChain, new OpInBoundsAccessChainOperands() },
+			//{ SpirVOpcodes.OpArrayLength, new OpArrayLengthOperands() },
+			//{ SpirVOpcodes.OpImagePointer, new OpImagePointerOperands() },
+			//{ SpirVOpcodes.OpGenericPtrMemSemantics, new OpGenericPtrMemSemanticsOperands() },
+
+			// Function
+			//{ SpirVOpcodes.OpFunction, new OpFunctionOperands() },
+			//{ SpirVOpcodes.OpFunctionParameter, new OpFunctionParameterOperands() },
+			//{ SpirVOpcodes.OpFunctionEnd, new OpFunctionEndOperands() },
+			//{ SpirVOpcodes.OpFunctionCall, new OpFunctionCallOperands() },
+
+			// Texture
+			//{ SpirVOpcodes.OpSampler, new OpSamplerOperands() },
+			//{ SpirVOpcodes.OpTextureSample, new OpTextureSampleOperands() },
+			//{ SpirVOpcodes.OpTextureSampleDref, new OpTextureSampleDrefOperands() },
+			//{ SpirVOpcodes.OpTextureSampleLod, new OpTextureSampleLodOperands() },
+			//{ SpirVOpcodes.OpTextureSampleProj, new OpTextureSampleProjOperands() },
+			//{ SpirVOpcodes.OpTextureSampleGrad, new OpTextureSampleGradOperands() },
+			//{ SpirVOpcodes.OpTextureSampleOffset, new OpTextureSampleOffsetOperands() },
+			//{ SpirVOpcodes.OpTextureSampleProjLod, new OpTextureSampleProjLodOperands() },
+			//{ SpirVOpcodes.OpTextureSampleProjGrad, new OpTextureSampleProjGradOperands() },
+			//{ SpirVOpcodes.OpTextureSampleLodOffset, new OpTextureSampleLodOffsetOperands() },
+			//{ SpirVOpcodes.OpTextureSampleProjOffset, new OpTextureSampleProjOffsetOperands() },
+			//{ SpirVOpcodes.OpTextureSampleGradOffset, new OpTextureSampleGradOffsetOperands() },
+			//{ SpirVOpcodes.OpTextureSampleProjLodOffset, new OpTextureSampleProjLodOffsetOperands() },
+			//{ SpirVOpcodes.OpTextureSampleProjGradOffset, new OpTextureSampleProjGradOffsetOperands() },
+			//{ SpirVOpcodes.OpTextureFetchTexelLod, new OpTextureFetchTexelLodOperands() },
+			//{ SpirVOpcodes.OpTextureFetchTexelOffset, new OpTextureFetchTexelOffsetOperands() },
+			//{ SpirVOpcodes.OpTextureFetchSample, new OpTextureFetchSampleOperands() },
+			//{ SpirVOpcodes.OpTextureFetchTexel, new OpTextureFetchTexelOperands() },
+			//{ SpirVOpcodes.OpTextureGather, new OpTextureGatherOperands() },
+			//{ SpirVOpcodes.OpTextureGatherOffset, new OpTextureGatherOffsetOperands() },
+			//{ SpirVOpcodes.OpTextureGatherOffsets, new OpTextureGatherOffsetsOperands() },
+			//{ SpirVOpcodes.OpTextureQuerySizeLod, new OpTextureQuerySizeLodOperands() },
+			//{ SpirVOpcodes.OpTextureQuerySize, new OpTextureQuerySizeOperands() },
+			//{ SpirVOpcodes.OpTextureQueryLod, new OpTextureQueryLodOperands() },
+			//{ SpirVOpcodes.OpTextureQueryLevels, new OpTextureQueryLevelsOperands() },
+			//{ SpirVOpcodes.OpTextureQuerySamples, new OpTextureQuerySamplesOperands() },
+
+			// Conversion
+			//{ SpirVOpcodes.OpConvertFToU, new OpConvertFToUOperands() },
+			//{ SpirVOpcodes.OpConvertFToS, new OpConvertFToSOperands() },
+			//{ SpirVOpcodes.OpConvertSToF, new OpConvertSToFOperands() },
+			//{ SpirVOpcodes.OpConvertUToF, new OpConvertUToFOperands() },
+			//{ SpirVOpcodes.OpUConvert, new OpUConvertOperands() },
+			//{ SpirVOpcodes.OpSConvert, new OpSConvertOperands() },
+			//{ SpirVOpcodes.OpFConvert, new OpFConvertOperands() },
+			//{ SpirVOpcodes.OpConvertPtrToU, new OpConvertPtrToUOperands() },
+			//{ SpirVOpcodes.OpConvertUToPtr, new OpConvertUToPtrOperands() },
+			//{ SpirVOpcodes.OpPtrCastToGeneric, new OpPtrCastToGenericOperands() },
+			//{ SpirVOpcodes.OpGenericCastToPtr, new OpGenericCastToPtrOperands() },
+			//{ SpirVOpcodes.OpBitcast, new OpBitcastOperands() },
+			//{ SpirVOpcodes.OpGenericCastToPtrExplicit, new OpGenericCastToPtrExplicitOperands() },
+			//{ SpirVOpcodes.OpSatConvertSToU, new OpSatConvertSToUOperands() },
+			//{ SpirVOpcodes.OpSatConvertUToS, new OpSatConvertUToSOperands() },
+
+			// Composite
+			//{ SpirVOpcodes.OpVectorExtractDynamic, new OpVectorExtractDynamicOperands() },
+			//{ SpirVOpcodes.OpVectorInsertDynamic, new OpVectorInsertDynamicOperands() },
+			//{ SpirVOpcodes.OpVectorShuffle, new OpVectorShuffleOperands() },
+			//{ SpirVOpcodes.OpCompositeConstruct, new OpCompositeConstructOperands() },
+			//{ SpirVOpcodes.OpCompositeExtract, new OpCompositeExtractOperands() },
+			//{ SpirVOpcodes.OpCompositeInsert, new OpCompositeInsertOperands() },
+			//{ SpirVOpcodes.OpCopyObject, new OpCopyObjectOperands() },
+			//{ SpirVOpcodes.OpTranspose, new OpTransposeOperands() },
+
+			// Arithmetic
+			//{ SpirVOpcodes.OpSNegate, new OpSNegateOperands() },
+			//{ SpirVOpcodes.OpFNegate, new OpFNegateOperands() },
+			//{ SpirVOpcodes.OpNot, new OpNotOperands() },
+			//{ SpirVOpcodes.OpIAdd, new OpIAddOperands() },
+			//{ SpirVOpcodes.OpFAdd, new OpFAddOperands() },
+			//{ SpirVOpcodes.OpISub, new OpISubOperands() },
+			//{ SpirVOpcodes.OpFSub, new OpFSubOperands() },
+			//{ SpirVOpcodes.OpIMul, new OpIMulOperands() },
+			//{ SpirVOpcodes.OpFMul, new OpFMulOperands() },
+			//{ SpirVOpcodes.OpUDiv, new OpUDivOperands() },
+			//{ SpirVOpcodes.OpSDiv, new OpSDivOperands() },
+			//{ SpirVOpcodes.OpFDiv, new OpFDivOperands() },
+			//{ SpirVOpcodes.OpUMod, new OpUModOperands() },
+			//{ SpirVOpcodes.OpSRem, new OpSRemOperands() },
+			//{ SpirVOpcodes.OpSMod, new OpSModOperands() },
+			//{ SpirVOpcodes.OpFRem, new OpFRemOperands() },
+			//{ SpirVOpcodes.OpFMod, new OpFModOperands() },
+			//{ SpirVOpcodes.OpVectorTimesScalar, new OpVectorTimesScalarOperands() },
+			//{ SpirVOpcodes.OpMatrixTimesScalar, new OpMatrixTimesScalarOperands() },
+			//{ SpirVOpcodes.OpVectorTimesMatrix, new OpVectorTimesMatrixOperands() },
+			//{ SpirVOpcodes.OpMatrixTimesVector, new OpMatrixTimesVectorOperands() },
+			//{ SpirVOpcodes.OpMatrixTimesMatrix, new OpMatrixTimesMatrixOperands() },
+			//{ SpirVOpcodes.OpOuterProduct, new OpOuterProductOperands() },
+			//{ SpirVOpcodes.OpDot, new OpDotOperands() },
+			//{ SpirVOpcodes.OpShiftRightLogical, new OpShiftRightLogicalOperands() },
+			//{ SpirVOpcodes.OpShiftRightArithmetic, new OpShiftRightArithmeticOperands() },
+			//{ SpirVOpcodes.OpShiftLeftLogical, new OpShiftLeftLogicalOperands() },
+			//{ SpirVOpcodes.OpBitwiseOr, new OpBitwiseOrOperands() },
+			//{ SpirVOpcodes.OpBitwiseXor, new OpBitwiseXorOperands() },
+			//{ SpirVOpcodes.OpBitwiseAnd, new OpBitwiseAndOperands() },
+
+			//Relational and Logical
+			//{ SpirVOpcodes.OpAny, new OpAnyOperands() },
+			//{ SpirVOpcodes.OpAll, new OpAllOperands() },
+			//{ SpirVOpcodes.OpIsNan, new OpIsNanOperands() },
+			//{ SpirVOpcodes.OpIsInf, new OpIsInfOperands() },
+			//{ SpirVOpcodes.OpIsFinite, new OpIsFiniteOperands() },
+			//{ SpirVOpcodes.OpIsNormal, new OpIsNormalOperands() },
+			//{ SpirVOpcodes.OpSignBitSet, new OpSignBitSetOperands() },
+			//{ SpirVOpcodes.OpLessOrGreater, new OpLessOrGreaterOperands() },
+			//{ SpirVOpcodes.OpOrdered, new OpOrderedOperands() },
+			//{ SpirVOpcodes.OpUnordered, new OpUnorderedOperands() },
+			//{ SpirVOpcodes.OpLogicalOr, new OpLogicalOrOperands() },
+			//{ SpirVOpcodes.OpLogicalXor, new OpLogicalXorOperands() },
+			//{ SpirVOpcodes.OpLogicalAnd, new OpLogicalAndOperands() },
+			//{ SpirVOpcodes.OpSelect, new OpSelectOperands() },
+			//{ SpirVOpcodes.OpIEqual, new OpIEqualOperands() },
+			//{ SpirVOpcodes.OpFOrdEqual, new OpFOrdEqualOperands() },
+			//{ SpirVOpcodes.OpFUnordEqual, new OpFUnordEqualOperands() },
+			//{ SpirVOpcodes.OpINotEqual, new OpINotEqualOperands() },
+			//{ SpirVOpcodes.OpFOrdNotEqual, new OpFOrdNotEqualOperands() },
+			//{ SpirVOpcodes.OpFUnordNotEqual, new OpFUnordNotEqualOperands() },
+			//{ SpirVOpcodes.OpULessThan, new OpULessThanOperands() },
+			//{ SpirVOpcodes.OpSLessThan, new OpSLessThanOperands() },
+			//{ SpirVOpcodes.OpFOrdLessThan, new OpFOrdLessThanOperands() },
+			//{ SpirVOpcodes.OpFUnordLessThan, new OpFUnordLessThanOperands() },
+			//{ SpirVOpcodes.OpUGreaterThan, new OpUGreaterThanOperands() },
+			//{ SpirVOpcodes.OpSGreaterThan, new OpSGreaterThanOperands() },
+			//{ SpirVOpcodes.OpFOrdGreaterThan, new OpFOrdGreaterThanOperands() },
+			//{ SpirVOpcodes.OpFUnordGreaterThan, new OpFUnordGreaterThanOperands() },
+			//{ SpirVOpcodes.OpULessThanEqual, new OpULessThanEqualOperands() },
+			//{ SpirVOpcodes.OpSLessThanEqual, new OpSLessThanEqualOperands() },
+			//{ SpirVOpcodes.OpFOrdLessThanEqual, new OpFOrdLessThanEqualOperands() },
+			//{ SpirVOpcodes.OpFUnordLessThanEqual, new OpFUnordLessThanEqualOperands() },
+			//{ SpirVOpcodes.OpUGreaterThanEqual, new OpUGreaterThanEqualOperands() },
+			//{ SpirVOpcodes.OpSGreaterThanEqual, new OpSGreaterThanEqualOperands() },
+			//{ SpirVOpcodes.OpFOrdGreaterThanEqual, new OpFOrdGreaterThanEqualOperands() },
+			//{ SpirVOpcodes.OpFUnordGreaterThanEqual, new OpFUnordGreaterThanEqualOperands() },
+
+			// Derivative
+			//{ SpirVOpcodes.OpDPdx, new OpDPdxOperands() },
+			//{ SpirVOpcodes.OpDPdy, new OpDPdyOperands() },
+			//{ SpirVOpcodes.OpFwidth, new OpFwidthOperands() },
+			//{ SpirVOpcodes.OpDPdxFine, new OpDPdxFineOperands() },
+			//{ SpirVOpcodes.OpDPdyFine, new OpDPdyFineOperands() },
+			//{ SpirVOpcodes.OpFwidthFine, new OpFwidthFineOperands() },
+			//{ SpirVOpcodes.OpDPdxCoarse, new OpDPdxCoarseOperands() },
+			//{ SpirVOpcodes.OpDPdyCoarse, new OpDPdyCoarseOperands() },
+			//{ SpirVOpcodes.OpFwidthCoarse, new OpFwidthCoarseOperands() },
+
+			// Flow Control
+			//{ SpirVOpcodes.OpPhi, new OpPhiOperands() },
+			//{ SpirVOpcodes.OpLoopMerge, new OpLoopMergeOperands() },
+			//{ SpirVOpcodes.OpSelectionMerge, new OpSelectionMergeOperands() },
+			//{ SpirVOpcodes.OpLabel, new OpLabelOperands() },
+			//{ SpirVOpcodes.OpBranch, new OpBranchOperands() },
+			//{ SpirVOpcodes.OpBranchConditional, new OpBranchConditionalOperands() },
+			//{ SpirVOpcodes.OpSwitch, new OpSwitchOperands() },
+			//{ SpirVOpcodes.OpKill, new OpKillOperands() },
+			//{ SpirVOpcodes.OpReturn, new OpReturnOperands() },
+			//{ SpirVOpcodes.OpReturnValue, new OpReturnValueOperands() },
+			//{ SpirVOpcodes.OpUnreachable, new OpUnreachableOperands() },
+			//{ SpirVOpcodes.OpLifetimeStart, new OpLifetimeStartOperands() },
+			//{ SpirVOpcodes.OpLifetimeStop, new OpLifetimeStopOperands() },
+
+			// Atomic
+			//{ SpirVOpcodes.OpAtomicInit, new OpAtomicInitOperands() },
+			//{ SpirVOpcodes.OpAtomicLoad, new OpAtomicLoadOperands() },
+			//{ SpirVOpcodes.OpAtomicStore, new OpAtomicStoreOperands() },
+			//{ SpirVOpcodes.OpAtomicExchange, new OpAtomicExchangeOperands() },
+			//{ SpirVOpcodes.OpAtomicCompareExchange, new OpAtomicCompareExchangeOperands() },
+			//{ SpirVOpcodes.OpAtomicCompareExchangeWeak, new OpAtomicCompareExchangeWeakOperands() },
+			//{ SpirVOpcodes.OpAtomicIIncrement, new OpAtomicIIncrementOperands() },
+			//{ SpirVOpcodes.OpAtomicIDecrement, new OpAtomicIDecrementOperands() },
+			//{ SpirVOpcodes.OpAtomicIAdd, new OpAtomicIAddOperands() },
+			//{ SpirVOpcodes.OpAtomicISub, new OpAtomicISubOperands() },
+			//{ SpirVOpcodes.OpAtomicUMin, new OpAtomicUMinOperands() },
+			//{ SpirVOpcodes.OpAtomicUMax, new OpAtomicUMaxOperands() },
+			//{ SpirVOpcodes.OpAtomicAnd, new OpAtomicAndOperands() },
+			//{ SpirVOpcodes.OpAtomicOr, new OpAtomicOrOperands() },
+			//{ SpirVOpcodes.OpAtomicXor, new OpAtomicXorOperands() },
+			//{ SpirVOpcodes.OpAtomicIMin, new OpAtomicIMinOperands() },
+			//{ SpirVOpcodes.OpAtomicIMax, new OpAtomicIMaxOperands() },
+
+			// Primitive
+			//{ SpirVOpcodes.OpEmitVertex, new OpEmitVertexOperands() },
+			//{ SpirVOpcodes.OpEndPrimitive, new OpEndPrimitiveOperands() },
+			//{ SpirVOpcodes.OpEmitStreamVertex, new OpEmitStreamVertexOperands() },
+			//{ SpirVOpcodes.OpEndStreamPrimitive, new OpEndStreamPrimitiveOperands() },
+
+			// Barrier
+			//{ SpirVOpcodes.OpControlBarrier, new OpControlBarrierOperands() },
+			//{ SpirVOpcodes.OpMemoryBarrier, new OpMemoryBarrierOperands() },
+
+			// Group
+			//{ SpirVOpcodes.OpAsyncGroupCopy, new OpAsyncGroupCopyOperands() },
+			//{ SpirVOpcodes.OpWaitGroupEvents, new OpWaitGroupEventsOperands() },
+			//{ SpirVOpcodes.OpGroupAll, new OpGroupAllOperands() },
+			//{ SpirVOpcodes.OpGroupAny, new OpGroupAnyOperands() },
+			//{ SpirVOpcodes.OpGroupBroadcast, new OpGroupBroadcastOperands() },
+			//{ SpirVOpcodes.OpGroupIAdd, new OpGroupIAddOperands() },
+			//{ SpirVOpcodes.OpGroupFAdd, new OpGroupFAddOperands() },
+			//{ SpirVOpcodes.OpGroupFMin, new OpGroupFMinOperands() },
+			//{ SpirVOpcodes.OpGroupUMin, new OpGroupUMinOperands() },
+			//{ SpirVOpcodes.OpGroupSMin, new OpGroupSMinOperands() },
+			//{ SpirVOpcodes.OpGroupFMax, new OpGroupFMaxOperands() },
+			//{ SpirVOpcodes.OpGroupUMax, new OpGroupUMaxOperands() },
+			//{ SpirVOpcodes.OpGroupSMax, new OpGroupSMaxOperands() },
+
+			// Device-Side Enqueue
+			//{ SpirVOpcodes.OpEnqueueMarker, new OpEnqueueMarkerOperands() },
+			//{ SpirVOpcodes.OpEnqueueKernel, new OpEnqueueKernelOperands() },
+			//{ SpirVOpcodes.OpGetKernelNDrangeSubGroupCount, new OpGetKernelNDrangeSubGroupCountOperands() },
+			//{ SpirVOpcodes.OpGetKernelNDrangeMaxSubGroupSize, new OpGetKernelNDrangeMaxSubGroupSizeOperands() },
+			//{ SpirVOpcodes.OpGetKernelWorkGroupSize, new OpGetKernelWorkGroupSizeOperands() },
+			//{ SpirVOpcodes.OpGetKernelPreferredWorkGroupSizeMultiple, new OpGetKernelPreferredWorkGroupSizeMultipleOperands() },
+			//{ SpirVOpcodes.OpRetainEvent, new OpRetainEventOperands() },
+			//{ SpirVOpcodes.OpReleaseEvent, new OpReleaseEventOperands() },
+			//{ SpirVOpcodes.OpCreateUserEvent, new OpCreateUserEventOperands() },
+			//{ SpirVOpcodes.OpIsValidEvent, new OpIsValidEventOperands() },
+			//{ SpirVOpcodes.OpSetUserEventStatus, new OpSetUserEventStatusOperands() },
+			//{ SpirVOpcodes.OpCaptureEventProfilingInfo, new OpCaptureEventProfilingInfoOperands() },
+			//{ SpirVOpcodes.OpGetDefaultQueue, new OpGetDefaultQueueOperands() },
+			//{ SpirVOpcodes.OpBuildNDRange, new OpBuildNDRangeOperands() },
+
+			// Pipe
+			//{ SpirVOpcodes.OpReadPipe, new OpReadPipeOperands() },
+			//{ SpirVOpcodes.OpWritePipe, new OpWritePipeOperands() },
+			//{ SpirVOpcodes.OpReservedReadPipe, new OpReservedReadPipeOperands() },
+			//{ SpirVOpcodes.OpReservedWritePipe, new OpReservedWritePipeOperands() },
+			//{ SpirVOpcodes.OpReserveReadPipePackets, new OpReserveReadPipePacketsOperands() },
+			//{ SpirVOpcodes.OpReserveWritePipePackets, new OpReserveWritePipePacketsOperands() },
+			//{ SpirVOpcodes.OpCommitReadPipe, new OpCommitReadPipeOperands() },
+			//{ SpirVOpcodes.OpCommitWritePipe, new OpCommitWritePipeOperands() },
+			//{ SpirVOpcodes.OpIsValidReserveId, new OpIsValidReserveIdOperands() },
+			//{ SpirVOpcodes.OpGetNumPipePackets, new OpGetNumPipePacketsOperands() },
+			//{ SpirVOpcodes.OpGetMaxPipePackets, new OpGetMaxPipePacketsOperands() },
+			//{ SpirVOpcodes.OpGroupReserveReadPipePackets, new OpGroupReserveReadPipePacketsOperands() },
+			//{ SpirVOpcodes.OpGroupReserveWritePipePackets, new OpGroupReserveWritePipePacketsOperands() },
+			//{ SpirVOpcodes.OpGroupCommitReadPipe, new OpGroupCommitReadPipeOperands() },
+			//{ SpirVOpcodes.OpGroupCommitWritePipe, new OpGroupCommitWritePipeOperands() }
+		};
+
 		public static Object[] GetOperands(SpirVOpcodes opcode, int[] words)
 		{
 			Object[] operands = null;
-			if (SpirVOpcodes.OpSource == opcode)
+			AbstractOperandInterpreter interpreter;
+            if (operandsInterpreter.TryGetValue(opcode, out interpreter))
 			{
-				operands = new Object[2];
-				SourceLanguages source = (SourceLanguages) words[0];
-				if (!Enum.IsDefined(typeof(SourceLanguages), source)) source = SourceLanguages.Unknown;
-				operands[0] = source;
-				operands[1] = words[1];
-			}
-			else if (SpirVOpcodes.OpMemoryModel == opcode)
-			{
-				operands = new Object[2];
-				AddressingModels addressing = (AddressingModels)words[0];
-				if (!Enum.IsDefined(typeof(AddressingModels), addressing)) addressing = AddressingModels.Unknown;
-				MemoryModels model = (MemoryModels)words[1];
-				if (!Enum.IsDefined(typeof(MemoryModels), model)) model = MemoryModels.Unknown;
-				operands[0] = addressing;
-				operands[1] = model;
-			}
-			else if (SpirVOpcodes.OpEntryPoint == opcode)
-			{
-				operands = new Object[2];
-				ExecutionModels model = (ExecutionModels)words[0];
-				if (!Enum.IsDefined(typeof(ExecutionModels), model)) model = ExecutionModels.Unknown;
-				operands[0] = model;
-				operands[1] = words[1];
-			}
-			else if (SpirVOpcodes.OpName == opcode)
-			{
-				operands = new Object[2];
-				operands[0] = words[0];
-				operands[1] = readString(words, 1);
+				return interpreter.Interpret(words);
 			}
 			else
 			{
