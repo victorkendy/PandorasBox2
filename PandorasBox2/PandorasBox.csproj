@@ -63,6 +63,7 @@
     <Compile Include="Gfx\SpirV\MemoryModels.cs" />
     <Compile Include="Gfx\SpirV\OperandInterpreter.cs" />
     <Compile Include="Gfx\SpirV\Operands\AbstractOperandInterpreter.cs" />
+    <Compile Include="Gfx\SpirV\Operands\NoInterpretation.cs" />
     <Compile Include="Gfx\SpirV\Operands\OpExtInstImportOperands.cs" />
     <Compile Include="Gfx\SpirV\Operands\OpDecorateOperands.cs" />
     <Compile Include="Gfx\SpirV\Operands\OpMemoryModelOperands.cs" />

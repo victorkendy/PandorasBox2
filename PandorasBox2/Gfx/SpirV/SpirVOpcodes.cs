@@ -43,7 +43,7 @@ namespace PandorasBox.Gfx.SpirV
 		// Type-Declaration
 		OpTypeVoid =		8,
 		OpTypeBool =		9,
-		opTypeInt =			10,
+		OpTypeInt =			10,
 		OpTypeFloat =		11,
 		OpTypeVector =		12,
 		OpTypeMatrix =		13,
