@@ -18,7 +18,7 @@ namespace PandorasBox.Gfx.SpirV
 			{ SpirVOpcodes.OpSource, new OpSourceOperands() },
 			//{ SpirVOpcodes.OpSourceExtension, new OpSourceExtensionOperands() },
 			{ SpirVOpcodes.OpName, new OpNameOperands() },
-			//{ SpirVOpcodes.OpMemberName, new OpMemberNameOperands() },
+			{ SpirVOpcodes.OpMemberName, new OpMemberNameOperands() },
 			//{ SpirVOpcodes.OpString, new OpStringOperands() },
 			{ SpirVOpcodes.OpLine, new NoInterpretation() },
 

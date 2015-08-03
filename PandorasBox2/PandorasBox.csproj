@@ -67,6 +67,7 @@
     <Compile Include="Gfx\SpirV\Operands\OpExtInstImportOperands.cs" />
     <Compile Include="Gfx\SpirV\Operands\OpDecorateOperands.cs" />
     <Compile Include="Gfx\SpirV\Operands\OpMemoryModelOperands.cs" />
+    <Compile Include="Gfx\SpirV\Operands\OpMemberNameOperands.cs" />
     <Compile Include="Gfx\SpirV\Operands\OpNameOperands.cs" />
     <Compile Include="Gfx\SpirV\Operands\OpEntryPointOperands.cs" />
     <Compile Include="Gfx\SpirV\Operands\OpSourceOperands.cs" />
