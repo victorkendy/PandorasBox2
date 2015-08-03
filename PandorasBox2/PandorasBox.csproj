@@ -71,6 +71,7 @@
     <Compile Include="Gfx\SpirV\Operands\OpNameOperands.cs" />
     <Compile Include="Gfx\SpirV\Operands\OpEntryPointOperands.cs" />
     <Compile Include="Gfx\SpirV\Operands\OpSourceOperands.cs" />
+    <Compile Include="Gfx\SpirV\Reflection\ShaderFunction.cs" />
     <Compile Include="Gfx\SpirV\SourceLanguages.cs" />
     <Compile Include="Gfx\SpirV\SpirVOpcodes.cs" />
     <Compile Include="Gfx\SpirV\ShaderLoader.cs" />
