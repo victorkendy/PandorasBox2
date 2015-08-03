@@ -326,7 +326,7 @@ namespace PandorasBox.Gfx.SpirV
 		{
 			Object[] operands = null;
 			AbstractOperandInterpreter interpreter;
-            if (operandsInterpreter.TryGetValue(opcode, out interpreter))
+			if (operandsInterpreter.TryGetValue(opcode, out interpreter))
 			{
 				return interpreter.Interpret(words);
 			}
